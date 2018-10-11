@@ -71,7 +71,7 @@ local function client()
             print("client recv msg", socket.udp_address(from))
             kc:lkcp_input(str)
             local len, content = kc:lkcp_recv()
-            while content do
+            while len > 0 do
                 print("client recv", content, socket.udp_address(from))
                 len, content = kc:lkcp_recv()
             end
