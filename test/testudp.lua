@@ -7,8 +7,8 @@ local floor = math.floor
 local next_tick = {}
 
 local function kcp_update(kc, now)
-    kc:ikcp_update()
-    next_tick[kc] = kc:ikcp_check(now)
+    kc:lkcp_update()
+    next_tick[kc] = kc:lkcp_check(now)
 end
 
 local function kcp_routine(kc)
@@ -34,11 +34,11 @@ local function server()
         if kc then
             print("server recv msg", socket.udp_address(from))
             kc:lkcp_input(str)
-            local content = kc:ikcp_recv()
+            local content = kc:lkcp_recv()
             while content do
                 print("server recv", content, socket.udp_address(from))
-                kc:ikcp_send("OK " .. content)
-                content = kc:ikcp_recv()
+                kc:lkcp_send("OK " .. content)
+                content = kc:lkcp_recv()
             end
             next_tick[kc] = 0
         else
@@ -70,10 +70,10 @@ local function client()
         if kc then
             print("client recv msg", socket.udp_address(from))
             kc:lkcp_input(str)
-            local content = kc:ikcp_recv()
+            local content = kc:lkcp_recv()
             while content do
                 print("client recv", content, socket.udp_address(from))
-                content = kc:ikcp_recv()
+                content = kc:lkcp_recv()
             end
             next_tick[kc] = 0
         else
@@ -88,7 +88,7 @@ local function client()
                 -- kc:lkcp_nodelay(0, 10, 0, 1)
                 kcp_routine(kc)
                 for i = 1, 20 do
-                    kc:ikcp_send("client msg " .. i)
+                    kc:lkcp_send("client msg " .. i)
                 end
                 next_tick[kc] = 0
             else
