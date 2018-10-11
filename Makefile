@@ -2,9 +2,9 @@ include platform.mk
 
 LUA_CLIB_PATH ?= 3rd/skynet/luaclib
 
-CFLAGS = -g -O2 -Wall -I$(LUA_INC) $(MYCFLAGS)
-
 LUA_INC ?= 3rd/skynet/3rd/lua
+
+CFLAGS = -g -O2 -Wall -I$(LUA_INC) $(MYCFLAGS)
 
 LUA_CLIB = lkcp
 
