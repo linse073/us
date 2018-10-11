@@ -14,7 +14,7 @@ all : \
 $(LUA_CLIB_PATH) :
 	mkdir $(LUA_CLIB_PATH)
 
-$(LUA_CLIB_PATH)/lkcp.so : lib-src/lkcp.c | $(LUA_CLIB_PATH)
+$(LUA_CLIB_PATH)/lkcp.so : lib-src/lkcp.c 3rd/kcp/ikcp.c | $(LUA_CLIB_PATH)
 	$(CC) $(CFLAGS) $(SHARED) -I3rd/kcp $^ -o $@	
 
 clean :

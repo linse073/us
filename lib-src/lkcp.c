@@ -199,21 +199,21 @@ static int lkcp_wndsize(lua_State* L){
     return 0;
 }
 
-/* static int lkcp_nodelay(lua_State* L){ */
-/* 	ikcpcb* kcp = check_kcp(L, 1); */
-/* 	if (kcp == NULL) { */
-/*         lua_pushnil(L); */
-/*         lua_pushstring(L, "error: kcp not args"); */
-/*         return 2; */
-/* 	} */
-/*     int32_t nodelay = luaL_checkinteger(L, 2); */
-/*     int32_t interval = luaL_checkinteger(L, 3); */
-/*     int32_t resend = luaL_checkinteger(L, 4); */
-/*     int32_t nc = luaL_checkinteger(L, 5); */
-/*     int32_t hr = ikcp_nodelay(kcp, nodelay, interval, resend, nc); */
-/*     lua_pushinteger(L, hr); */
-/*     return 1; */
-/* } */
+static int lkcp_nodelay(lua_State* L){
+	ikcpcb* kcp = check_kcp(L, 1);
+	if (kcp == NULL) {
+        lua_pushnil(L);
+        lua_pushstring(L, "error: kcp not args");
+        return 2;
+	}
+    int32_t nodelay = luaL_checkinteger(L, 2);
+    int32_t interval = luaL_checkinteger(L, 3);
+    int32_t resend = luaL_checkinteger(L, 4);
+    int32_t nc = luaL_checkinteger(L, 5);
+    int32_t hr = ikcp_nodelay(kcp, nodelay, interval, resend, nc);
+    lua_pushinteger(L, hr);
+    return 1;
+}
 
 
 static const struct luaL_Reg lkcp_methods [] = {
@@ -224,7 +224,7 @@ static const struct luaL_Reg lkcp_methods [] = {
     { "lkcp_input" , lkcp_input },
     { "lkcp_flush" , lkcp_flush },
     { "lkcp_wndsize" , lkcp_wndsize },
-    /* { "lkcp_nodelay" , lkcp_nodelay }, */
+    { "lkcp_nodelay" , lkcp_nodelay },
 	{NULL, NULL},
 };
 
