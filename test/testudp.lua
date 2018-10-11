@@ -4,17 +4,19 @@ local lkcp = require "lkcp"
 
 local floor = math.floor
 
+local next_tick = {}
+
 local function kcp_update(kc, now)
     kc:ikcp_update()
-    kc.next_tick = kc:ikcp_check(now)
+    next_tick[kc] = kc:ikcp_check(now)
 end
 
 local function kcp_routine(kc)
-    kc.next_tick = 0
+    next_tick[kc] = 0
     skynet.fork(function()
         while true do
             local now = floor(skynet.time() * 1000)
-            if now >= kc.next_tick then
+            if now >= next_tick[kc] then
                 kcp_update(kc, now)
             end
             skynet.sleep(1)
@@ -38,7 +40,7 @@ local function server()
                 kc:ikcp_send("OK " .. content)
                 content = kc:ikcp_recv()
             end
-            kc.next_tick = 0
+            next_tick[kc] = 0
         else
             if str == "hello" then
                 local curConn = conn
@@ -73,7 +75,7 @@ local function client()
                 print("client recv", content, socket.udp_address(from))
                 content = kc:ikcp_recv()
             end
-            kc.next_tick = 0
+            next_tick[kc] = 0
         else
             local conn_str = str:match("conn_(%d+)")
             if conn_str then
@@ -88,7 +90,7 @@ local function client()
                 for i = 1, 20 do
                     kc:ikcp_send("client msg " .. i)
                 end
-                kc.next_tick = 0
+                next_tick[kc] = 0
             else
                 print("error connection:", str)
             end
