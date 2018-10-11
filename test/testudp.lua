@@ -34,11 +34,11 @@ local function server()
         if kc then
             print("server recv msg", socket.udp_address(from))
             kc:lkcp_input(str)
-            local content = kc:lkcp_recv()
-            while content do
+            local len, content = kc:lkcp_recv()
+            while len > 0 do
                 print("server recv", content, socket.udp_address(from))
                 kc:lkcp_send("OK " .. content)
-                content = kc:lkcp_recv()
+                len, content = kc:lkcp_recv()
             end
             next_tick[kc] = 0
         else
@@ -70,10 +70,10 @@ local function client()
         if kc then
             print("client recv msg", socket.udp_address(from))
             kc:lkcp_input(str)
-            local content = kc:lkcp_recv()
+            local len, content = kc:lkcp_recv()
             while content do
                 print("client recv", content, socket.udp_address(from))
-                content = kc:lkcp_recv()
+                len, content = kc:lkcp_recv()
             end
             next_tick[kc] = 0
         else
