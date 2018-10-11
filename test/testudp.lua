@@ -7,7 +7,7 @@ local floor = math.floor
 local next_tick = {}
 
 local function kcp_update(kc, now)
-    kc:lkcp_update()
+    kc:lkcp_update(now)
     next_tick[kc] = kc:lkcp_check(now)
 end
 
